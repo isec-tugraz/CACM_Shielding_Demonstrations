@@ -1,4 +1,4 @@
-DOCKER_IMAGE=gsw_ai_lab
+DOCKER_IMAGE=cacm_shielding_framework
 IMAGE_VERSION=latest
 CONTAINER_NAME=tempestpy_jupyter
 
