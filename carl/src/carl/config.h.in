@@ -1,0 +1,11 @@
+/**
+ * Auto generated file config.h from config.h.in.
+ */ 
+#pragma once
+
+#define CARL_BUILD_${CMAKE_BUILD_TYPE}
+#cmakedefine LOGGING
+#cmakedefine LOGGING_DISABLE_INEFFICIENT
+#cmakedefine THREAD_SAFE
+#cmakedefine USE_BLISS
+#cmakedefine USE_COCOA

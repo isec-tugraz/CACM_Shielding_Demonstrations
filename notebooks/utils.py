@@ -26,6 +26,9 @@ from minigrid.core.state import to_state, State
 import os
 import time
 
+import pandas as pd
+import matplotlib.pyplot as plt
+
 import argparse
 
 def tic():
@@ -79,7 +82,7 @@ class MiniGridShieldHandler(ShieldHandler):
         self.shield_expression = stormpy.logic.ShieldExpression(stormpy.logic.ShieldingType.PRE_SAFETY, shield_comparison, shield_value)
 
         self.nocleanup = nocleanup
-        
+
     def __del__(self):
         if not self.nocleanup:
             shutil.rmtree(self.tmp_dir_name)
@@ -166,13 +169,87 @@ class MiniGridShieldHandler(ShieldHandler):
         if self.action_dictionary is not None:
             #print("Returning already calculated shield")
             return self.action_dictionary
-            
+
         env = kwargs["env"]
         self.__export_grid_to_text(env)
         self.__create_prism()
         print("Computing new shield")
         return self.__create_shield_dict()
-        
+
+
+
+def plot_sb3_metric(
+    csv_path,
+    y_cols,
+    save_path,
+    title="Training Metric"
+):
+    """
+    Plot a metric (or sum of metrics) from a single Stable Baselines3 training CSV
+    and save the plot as an image (e.g. PNG).
+
+    Parameters
+    ----------
+    csv_path : str
+        Path to the CSV file (e.g., 'logs/progress.csv').
+    y_cols : str or list[str]
+        Column name(s) to plot on the Y-axis. If multiple columns are given,
+        their elementwise sum is plotted.
+    save_path : str
+        Full path (including filename) where the plot will be saved (e.g. '/output/reward_plot.png').
+    title : str
+        Title for the plot.
+    """
+    # Read CSV
+    df = pd.read_csv(csv_path)
+
+    # Ensure y_cols is a list
+    if isinstance(y_cols, str):
+        y_cols = [y_cols]
+
+    # Check columns exist
+    missing = [c for c in y_cols if c not in df.columns]
+    if missing:
+        raise ValueError(f"Columns not found in CSV: {missing}")
+
+    # Ensure 'time/total_timesteps' column exists
+    if 'time/total_timesteps' not in df.columns:
+        raise ValueError("Expected column 'time/total_timesteps' not found in CSV.")
+
+    # Sort by total timesteps
+    df = df.sort_values(by='time/total_timesteps').reset_index(drop=True)
+
+    # Compute Y values
+    if len(y_cols) == 1:
+        y = df[y_cols[0]]
+        label = y_cols[0]
+    else:
+        y = df[y_cols].sum(axis=1)
+        label = " + ".join(y_cols)
+
+    # X values
+    x = df['time/total_timesteps']
+
+    # Plot
+    plt.figure(figsize=(10, 6))
+    plt.plot(x, y, alpha=0.9, label=f"{label}")
+    plt.xlabel("Timesteps")
+    plt.ylabel(label)
+    plt.title(title)
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+
+    plt.ticklabel_format(style='plain', axis='x')
+    plt.gca().get_xaxis().get_offset_text().set_visible(False)
+
+    # Ensure save directory exists
+    os.makedirs(os.path.dirname(save_path), exist_ok=True)
+
+    # Save to file
+    plt.savefig(save_path)
+    plt.close()
+    print(f"Plot saved to: {save_path}")
 
 def rectangle_for_overlay(x, y, dir, tile_size, width=2, offset=0, thickness=0):
     if dir == 0: return (((x+1)*tile_size-width-thickness,y*tile_size+offset), ((x+1)*tile_size,(y+1)*tile_size-offset))

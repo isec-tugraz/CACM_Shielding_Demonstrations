@@ -1,0 +1,36 @@
+---
+
+properties:
+  - property: "modeltype"
+    value: "mdp"
+
+formulas:
+  - formula: "YellowMovesNorth"
+    content: "(rowYellow=2 | rowYellow=3 | rowYellow=4) & colYellow=1 & viewYellow=3"
+  - formula: "YellowMovesSouth"
+    content: "(rowYellow=2 | rowYellow=3 | rowYellow=4) & colYellow=1 & viewYellow=1"
+
+modules:
+  - module: "Yellow"
+    overwrite: True
+    module_text: |
+      colYellow : [1..5] init 1;
+      rowYellow : [1..5] init 1;
+      viewYellow : [0..3] init 1;
+      YellowCarryingYellowBall : bool init false;
+
+      [Yellow_turn_right] (!YellowMovesSouth & !YellowMovesNorth) -> 1.000000: (viewYellow'=mod(viewYellow+1,4));
+      [Yellow_turn_left] (!YellowMovesSouth & !YellowMovesNorth) -> 1.000000: (viewYellow'=viewYellow-1);
+      [Yellow_turn_left] (!YellowMovesSouth & !YellowMovesNorth) -> 1.000000: (viewYellow'=3);
+      [Yellow_move_North] !YellowMovesSouth & viewYellow=3 & !YellowIsOnGoal & !YellowCannotMoveNorthWall & !YellowCannotMoveConditionally -> 1.000000: (rowYellow'=rowYellow-1);
+      [Yellow_move_East] !(YellowMovesNorth|YellowMovesSouth) & viewYellow=0 & !YellowIsOnGoal & !YellowCannotMoveEastWall & !YellowCannotMoveConditionally -> 1.000000: (colYellow'=colYellow+1);
+      [Yellow_move_South] !YellowMovesNorth & viewYellow=1 & !YellowIsOnGoal & !YellowCannotMoveSouthWall & !YellowCannotMoveConditionally -> 1.000000: (rowYellow'=rowYellow+1);
+      [Yellow_move_West] !(YellowMovesNorth|YellowMovesSouth) & viewYellow=2 & !YellowIsOnGoal & !YellowCannotMoveWestWall & !YellowCannotMoveConditionally -> 1.000000: (colYellow'=colYellow-1);
+      [Yellow_pickup_YellowBall]  !YellowIsCarrying & YellowCannotMoveYellowBall -> (YellowCarryingYellowBall'=true);
+      [Yellow_drop_YellowBall_north]	YellowCarryingYellowBall & viewYellow=3 & !YellowCannotMoveConditionally & !YellowCannotMoveNorthWall -> (YellowCarryingYellowBall'=false);
+      [Yellow_drop_YellowBall_west] 	YellowCarryingYellowBall & viewYellow=2 & !YellowCannotMoveConditionally & !YellowCannotMoveWestWall  -> (YellowCarryingYellowBall'=false);
+      [Yellow_drop_YellowBall_south]	YellowCarryingYellowBall & viewYellow=1 & !YellowCannotMoveConditionally & !YellowCannotMoveSouthWall -> (YellowCarryingYellowBall'=false);
+      [Yellow_drop_YellowBall_east] 	YellowCarryingYellowBall & viewYellow=0 & !YellowCannotMoveConditionally & !YellowCannotMoveEastWall  -> (YellowCarryingYellowBall'=false);
+
+
+...

@@ -1,0 +1,23 @@
+mdp
+
+formula AgentCannotMoveEastWall = (colAgent=1&rowAgent=2) | (colAgent=4&rowAgent=2) | (colAgent=4&rowAgent=3) | (colAgent=4&rowAgent=4) | (colAgent=4&rowAgent=1);
+formula AgentCannotMoveNorthWall = (colAgent=1&rowAgent=1) | (colAgent=2&rowAgent=1) | (colAgent=3&rowAgent=1) | (colAgent=2&rowAgent=3) | (colAgent=3&rowAgent=3) | (colAgent=4&rowAgent=1);
+formula AgentCannotMoveSouthWall = (colAgent=2&rowAgent=1) | (colAgent=3&rowAgent=1) | (colAgent=1&rowAgent=4) | (colAgent=2&rowAgent=4) | (colAgent=3&rowAgent=4) | (colAgent=4&rowAgent=4);
+formula AgentCannotMoveWestWall = (colAgent=1&rowAgent=1) | (colAgent=1&rowAgent=2) | (colAgent=4&rowAgent=2) | (colAgent=1&rowAgent=3) | (colAgent=1&rowAgent=4);
+formula AgentIsOnSlippery = false;
+
+module Agent
+  colAgent : [1..4] init 4;
+  rowAgent : [1..4] init 1;
+  viewAgent : [0..3] init 1;
+
+  [Agent_turn_right] !AgentIsOnOneWay-> 1.000000: (viewAgent'=mod(viewAgent+1,4));
+  [Agent_turn_left] !AgentIsOnOneWay-> 1.000000: (viewAgent'=viewAgent-1);
+  [Agent_turn_left] !AgentIsOnOneWay-> 1.000000: (viewAgent'=3);
+  [Agent_move_North] viewAgent=3 & !AgentCannotMoveNorthWall -> 1.000000: (rowAgent'=rowAgent-1);
+  [Agent_move_East] colAgent != 1 & rowAgent != 1-> 1.000000: (colAgent'=colAgent+1);
+  [Agent_move_South] viewAgent=1 & !AgentCannotMoveSouthWall -> 1.000000: (rowAgent'=rowAgent+1);
+  [Agent_move_West] viewAgent=2 & !AgentCannotMoveWestWall -> 1.000000: (colAgent'=colAgent-1);
+endmodule
+
+formula AgentIsOnOneWay = (colAgent=2&rowAgent=1) | (colAgent=3&rowAgent=1); // created through configuration

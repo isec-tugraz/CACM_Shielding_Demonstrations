@@ -864,8 +864,6 @@ class MiniGridEnv(gym.Env):
         info["ran_into_lava"] = ran_into_lava
         info["opened_door"] = opened_door
         info["picked_up"] = picked_up
-        #if terminated:
-        #    print(f"Terminated at: {self.agent_pos} {self.grid.get(*self.agent_pos)} {info}")
         if len(self.adversaries) > 0: info["collision"] = collision
         obs = self.gen_obs()
         return obs, reward, terminated, truncated, info

@@ -1,0 +1,19 @@
+---
+formulas:
+  - formula: "AgentIsOnOneWay"
+    content: "(colAgent=2&rowAgent=1) | (colAgent=3&rowAgent=1)"
+  
+modules:
+  - module: "Agent"
+    commands:
+      - action: "[Agent_move_East]"
+        guard: "colAgent != 1 & rowAgent != 1"
+        overwrite: True
+      - action: "[Agent_turn_right]"
+        guard: "!AgentIsOnOneWay"
+        overwrite: True
+      - action: "[Agent_turn_left]"
+        guard: "!AgentIsOnOneWay"
+        overwrite: True
+        index: [0,1]
+...

@@ -90,7 +90,7 @@ class WindyCityEnv(MiniGridEnv):
                         not isinstance(cell, Lava) and
                         not isinstance(cell, Goal) and
                         (spawn_on_slippery or not is_slippery(cell)) and
-                        not (x in [7, 8, 9, 10] and y in [9, 10]))
+                        not (x in [7, 8, 9, 10, 11, 12] and y in [7, 8, 9, 10, 11, 12]))
                     ):
                     self.agent_pos = np.array((x, y))
                     self.agent_dir = np.random.randint(0, 4)
@@ -122,21 +122,14 @@ class WindyCityEnv(MiniGridEnv):
         obs, reward, terminated, truncated, info = super().step(action)
         self.trajectory.append((action, self.agent_pos, self.agent_dir))
         if truncated and info["ran_into_lava"]:
-            print(self.trajectory)
-            print("truncated: ", info)
             self.trajectory = list()
         if truncated and info["reached_goal"]:
-            print("truncated: ", info)
             self.trajectory = list()
         elif terminated and info["ran_into_lava"]:
-            print(self.trajectory)
-            print("terminated: ", info)
             self.trajectory = list()
         elif terminated:
-            print("terminated: ", info)
             self.trajectory = list()
         elif truncated:
-            print("truncated: ", info)
             self.trajectory = list()
         return obs, reward - self.per_step_penalty, terminated, truncated, info
 
@@ -298,21 +291,14 @@ class WindyCityAdvEnv(AdversaryEnv):
         obs, reward, terminated, truncated, info = super().step(action)
         self.trajectory.append((action, self.agent_pos, self.agent_dir, str(self.adversaries["blue"])))
         if truncated and info["ran_into_lava"]:
-            print(self.trajectory)
-            print("truncated: ", info)
             self.trajectory = list()
         if truncated and info["reached_goal"]:
-            print("truncated: ", info)
             self.trajectory = list()
         elif terminated and info["ran_into_lava"]:
-            print(self.trajectory)
-            print("terminated: ", info)
             self.trajectory = list()
         elif terminated:
-            print("terminated: ", info)
             self.trajectory = list()
         elif truncated:
-            print("truncated: ", info)
             self.trajectory = list()
         return obs, reward - self.per_step_penalty, terminated, truncated, info
 
@@ -457,7 +443,7 @@ class WindyCity2Env(MiniGridEnv):
                         not isinstance(cell, Lava) and
                         not isinstance(cell, Goal) and
                         (spawn_on_slippery or not is_slippery(cell)) and
-                        not (x in [7, 8, 9, 10] and y in [9, 10]))
+                        not (x in [7, 8, 9, 10, 11, 12] and y in [7, 8, 9, 10, 11, 12]))
                     ):
                     self.agent_pos = np.array((x, y))
                     self.agent_dir = np.random.randint(0, 4)
@@ -489,21 +475,14 @@ class WindyCity2Env(MiniGridEnv):
         obs, reward, terminated, truncated, info = super().step(action)
         self.trajectory.append((action, self.agent_pos, self.agent_dir))
         if truncated and info["ran_into_lava"]:
-            print(self.trajectory)
-            print("truncated: ", info)
             self.trajectory = list()
         if truncated and info["reached_goal"]:
-            print("truncated: ", info)
             self.trajectory = list()
         elif terminated and info["ran_into_lava"]:
-            print(self.trajectory)
-            print("terminated: ", info)
             self.trajectory = list()
         elif terminated:
-            print("terminated: ", info)
             self.trajectory = list()
         elif truncated:
-            print("truncated: ", info)
             self.trajectory = list()
         return obs, reward - self.per_step_penalty, terminated, truncated, info
 
@@ -691,25 +670,16 @@ class WindyCitySmallAdv(AdversaryEnv):
         obs, reward, terminated, truncated, info = super().step(action)
         self.trajectory.append((action, self.agent_pos, self.agent_dir))
         if truncated and info["ran_into_lava"]:
-            print(self.trajectory)
-            print("truncated: ", info)
             self.trajectory = list()
         if truncated and info["reached_goal"]:
-            print("truncated: ", info)
             self.trajectory = list()
         elif terminated and info["ran_into_lava"]:
-            print(self.trajectory)
-            print("terminated: ", info)
             self.trajectory = list()
         elif terminated and info["collision"]:
-            print(self.trajectory)
-            print("terminated: ", info)
             self.trajectory = list()
         elif terminated:
-            print("terminated: ", info)
             self.trajectory = list()
         elif truncated:
-            print("truncated: ", info)
             self.trajectory = list()
         return obs, reward - self.per_step_penalty, terminated, truncated, info
 

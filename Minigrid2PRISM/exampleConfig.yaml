@@ -1,0 +1,44 @@
+---
+# labels:
+#   - label: "AgentIsInGoal"
+#     text: "AgentIsInGoal"
+#   - label: "Hallo"
+#     text: "AgentIsInGoal"
+
+# constants:
+#   - constant: "prop_slippery_turn"
+#     type: "double"
+#     value: "9/9"
+#     overwrite: True
+
+properties:
+  - property: "FaultProbability"
+    value: 0.2
+  - property: "ProbForwardIntended"
+    value: 0.1
+  - property: "ProbTurnIntended"
+    value: 0.1
+  # - property: "modeltype"
+  #   value: "smg"
+  
+modules:
+  - module: "Agent"
+    # overwrite: True
+    # module_text: | 
+    #   NewModule 
+    #   True 
+    commands:
+      - action: "[Agent_turn_left]"
+        guard: "viewAgent=3"
+        overwrite: True
+        index: 1
+      - action: "[Agent_turn_left]"
+        update: "(viewAgent'=3)"
+        overwrite: True
+        index: 3
+      - action: "[Agent_turn_right]"
+        guard: "AgentIsOnSlippery"
+        update: "(viewAgent'=3)"
+        overwrite: True
+        index: [0,1]
+...

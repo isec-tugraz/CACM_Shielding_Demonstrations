@@ -1,0 +1,17 @@
+WGWGWGWGWGWG
+WG      XRWG
+WG  WGWG  WG
+WG        WG
+WG        WG
+WGWGWGWGWGWG
+------------
+WGWGWGWGWGWG
+WG        WG
+WG  WGWG  WG
+WG        WG
+WG        WG
+WGWGWGWGWGWG
+------------
+------------
+ProbTurnIntended:0.85
+ProbForwardIntended:0.25

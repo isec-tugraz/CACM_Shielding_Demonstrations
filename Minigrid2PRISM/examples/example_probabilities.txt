@@ -1,0 +1,13 @@
+WGWGWGWG
+WGVRXRWG
+WGnB  WG
+WGWGWGWG
+--------
+WGWGWGWG
+WG    WG
+WGnB  WG
+WGWGWGWG
+--------
+--------
+ProbTurnIntended:0.85
+ProbForwardIntended:0.25
