@@ -10,12 +10,20 @@ This artifact contains the necessary code to reproduce the experimental results 
 
 ## Installing the artifact
 
-To install the artifact simply run:
+You can download the image from the docker registry, by running:
+
+```
+ docker pull stefanpranger/cacm_shielding_demonstrations
+```
+
+This will make the image `stefanpranger/cacm_shielding_demonstrations` available on your machine.
+
+Optionally, you can build the image by running:
 
 ```
 ./docker_build.sh
 ```
-After this, an image with the tag `cacm_shielding_demonstrations` should be available on your machine.
+After this, an image with the tag `cacm_shielding_demonstrations` should be available on your machine. If you choose this option, you need to change `DOCKER_IMAGE` in `docker_run_experiments.sh` and `docker_run_jupyter.sh` to `cacm_shielding_demonstrations`.
 
 ## Running the Experiments
 

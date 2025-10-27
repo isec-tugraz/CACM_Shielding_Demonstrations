@@ -1,4 +1,4 @@
-DOCKER_IMAGE=cacm_shielding_framework
+DOCKER_IMAGE=stefanpranger/cacm_shielding_demonstrations
 IMAGE_VERSION=latest
 CONTAINER_NAME=tempestpy_jupyter
 
